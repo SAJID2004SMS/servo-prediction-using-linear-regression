@@ -1,7 +1,6 @@
 
 
 # SERVO PREDICTION USING LINEAR REGRESSION 
-
 # IMPORT LIBRARIES
 import pandas as pd
 import numpy as np
@@ -13,32 +12,25 @@ import matplotlib.pyplot as plt
 # IMPORT CSV AS DATAFRAME
 df = pd.read_csv(r'https://github.com/YBI-Foundation/Dataset/raw/main/Servo%20Mechanism.csv')
 
-# GET THE FIRST 5 ROWS
+# EXPLORE THE DATA
 print("First 5 rows of the dataset:")
 print(df.head())
 
-# GET INFO OF DATAFRAME
 print("\nDataframe Info:")
-print(df.info())
+df.info()
 
-# GET SUMMARY STATISTICS
 print("\nSummary Statistics:")
 print(df.describe())
 
-# GET COLUMN NAMES
 print("\nColumn Names:")
 print(df.columns)
 
-# GET SHAPE OF DATAFRAME
-print("\nShape of DataFrame:")
+print("\nShape of the Dataframe:")
 print(df.shape)
 
-# GET CATEGORIES AND COUNTS OF CATEGORICAL VARIABLES
-print("\nValue counts for 'Motor':")
-print(df[['Motor']].value_counts())
-
-print("\nValue counts for 'Screw':")
-print(df[['Screw']].value_counts())
+print("\nValue Counts for Categorical Variables:")
+print("Motor:\n", df['Motor'].value_counts())
+print("Screw:\n", df['Screw'].value_counts())
 
 # ENCODE CATEGORICAL FEATURES
 df.replace({'Motor': {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4}}, inplace=True)
@@ -46,18 +38,14 @@ df.replace({'Screw': {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4}}, inplace=True)
 
 # DEFINE y (DEPENDENT VARIABLE) AND X (INDEPENDENT VARIABLES)
 y = df['Class']
-print("\nShape of y:")
-print(y.shape)
-
 X = df[['Motor', 'Screw', 'Pgain', 'Vgain']]
-print("\nShape of X:")
-print(X.shape)
 
 # TRAIN-TEST SPLIT
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=2529)
+
 print("\nTraining and Testing Data Shapes:")
-print(f"X_train: {X_train.shape}, X_test: {X_test.shape}")
-print(f"y_train: {y_train.shape}, y_test: {y_test.shape}")
+print("X_train:", X_train.shape, "X_test:", X_test.shape)
+print("y_train:", y_train.shape, "y_test:", y_test.shape)
 
 # TRAIN THE LINEAR REGRESSION MODEL
 lr = LinearRegression()
@@ -65,9 +53,6 @@ lr.fit(X_train, y_train)
 
 # PREDICT USING THE MODEL
 y_pred = lr.predict(X_test)
-print("\nShape of y_pred:")
-print(y_pred.shape)
-print("Predicted values:", y_pred)
 
 # EVALUATE THE MODEL
 mse = mean_squared_error(y_test, y_pred)
@@ -80,64 +65,19 @@ print(f"Mean Absolute Error: {mae}")
 print(f"R-squared: {r2}")
 
 # VISUALIZE ACTUAL VS PREDICTED RESULTS
-plt.scatter(y_test, y_pred)
+plt.scatter(y_test, y_pred, alpha=0.7, color="b")
 plt.xlabel("Actual")
 plt.ylabel("Predicted")
-plt.title("Actual vs Predicted")
+plt.title("Actual Vs Predicted")
 plt.show()
 
 # FUTURE PREDICTIONS
-X_new = df.sample(1)  # Randomly sample one row for future prediction
+X_new = df.sample(1)  # Randomly sample one row
 print("\nRandomly Sampled Data for Prediction:")
 print(X_new)
 
 X_new = X_new.drop('Class', axis=1)  # Drop the dependent variable for prediction
-print("\nShape of new input data:")
-print(X_new.shape)
-
 y_pred_new = lr.predict(X_new)
+
 print("\nPredicted Value for the New Sample:")
 print(y_pred_new)
-
-# EXPLANATION OF THE LINEAR REGRESSION MODEL
-# Predicting server behavior with a linear equation involves relating input variables (like user count) to an output (like response time).
-# The general equation is:
-
-# Y = β₀ + β₁ * X₁ + β₂ * X₂ + ... + βn * Xn
-
-# - Y: Predicted output (e.g., response time).
-# - X₁, X₂, ...: Inputs (e.g., number of users, time).
-# - β₀: Intercept, baseline value.
-# - β₁, β₂, ...: Coefficients showing the impact of each input.
-
-# Use historical data to estimate coefficients. Then, plug in new input values to predict server behavior.
-
-Key Changes:
-
-1. Improved Output Formatting: Used print statements to better format the output and ensure clarity.
-
-
-2. Encapsulated Outputs: Grouped relevant outputs together to maintain readability.
-
-
-3. Clarified Data Shape and Variable Explanations: Added clarity to the shape of variables like y, X, and the predictions (y_pred).
-
-
-4. Future Prediction Sample: Simplified and clarified the handling of the future prediction sample.
-
-
-5. Visualizations and Evaluation: Ensured that the visualization of actual vs. predicted values was done clearly and presented the evaluation metrics effectively.
-
-
-
-Explanation:
-
-Linear Regression: The model predicts the dependent variable Class based on the features Motor, Screw, Pgain, and Vgain. The categorical features, Motor and Screw, are encoded into numeric values.
-
-Data Preprocessing: The dataset is preprocessed by replacing categorical values with numerical ones using the .replace() function.
-
-Training the Model: The linear regression model is trained using the training data and is tested on the test set.
-
-Evaluation: The model is evaluated using metrics like Mean Squared Error (MSE), Mean Absolute
-
-
